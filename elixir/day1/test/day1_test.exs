@@ -3,46 +3,6 @@ defmodule Day1Test do
   import Day1
 
   test "
-    given a list of [0]
-    when adjusting
-    return 0
-  " do
-    assert adjustFrequency([0]).adjusted == 0
-  end
-
-  test "
-    given a list of [1]
-    when adjusting
-    return 1
-  " do
-    assert adjustFrequency([1]).adjusted == 1
-  end
-
-  test "
-    given a list of [-1]
-    when adjusting
-    return -1
-  " do
-    assert adjustFrequency([-1]).adjusted == -1
-  end
-
-  test "
-    given a list of [-1, 1]
-    when adjusting
-    return 0
-  " do
-    assert adjustFrequency([-1, 1]).adjusted == 0
-  end
-
-  test "
-    given a list of many adjustments
-    when adjusting
-    return 0
-  " do
-    assert adjustFrequency([-1, 1, 2, 12, -3, 6]).adjusted == 17
-  end
-
-  test "
     given a file containing these adjustments: [-1, 1, 2, 12, -3, 6]
     when adjusting
     return the final frequency of 17
@@ -75,7 +35,6 @@ defmodule Day1Test do
     result = findRepeatingFrequency([-2, 1, 1])
     assert result.first_repeating == -2
     assert result.tries == 2
-    assert result.adjusted == 0
   end
 
   test "

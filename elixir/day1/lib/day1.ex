@@ -1,5 +1,5 @@
 defmodule Day1.Frequencies do
-  defstruct current: 0, adjusted: 0, seen: [], first_repeating: nil, tries: 0
+  defstruct current: 0, seen: MapSet.new(), first_repeating: nil, tries: 0
 end
 
 defmodule Day1 do
@@ -47,7 +47,7 @@ defmodule Day1 do
         result =
           processFile(file)
           |> findRepeatingFrequency
-
+        IO.puts("Loops #{result.tries}")
         result.first_repeating
 
       {:error, :enoent} ->
@@ -59,13 +59,11 @@ defmodule Day1 do
   end
 
   def adjustFrequency(input, starting \\ %Day1.Frequencies{}) do
-    reset = %{starting | adjusted: 0}
-    result = Enum.reduce(input, reset, fn x, acc -> reduceFrequencies(x, acc) end)
+    result = Enum.reduce(input, starting, fn x, acc -> reduceFrequencies(x, acc) end)
     %{result | tries: result.tries + 1}
   end
 
   defp reduceFrequencies(change, accumulator) do
-    adjusted = accumulator.adjusted + change
     global = accumulator.current + change
 
     first_repeating =
@@ -76,9 +74,8 @@ defmodule Day1 do
 
     %{
       accumulator
-      | adjusted: adjusted,
-        current: global,
-        seen: accumulator.seen ++ [adjusted],
+      | current: global,
+        seen: MapSet.put(accumulator.seen, global),
         first_repeating: first_repeating
     }
   end
