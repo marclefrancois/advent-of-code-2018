@@ -47,9 +47,8 @@ defmodule Day1Test do
     when adjusting
     return the final frequency of 17
   " do
-    result = adjustFrequencyFromFile("../../inputFiles/simpleTestInputPartOne.txt")
-    assert result.tries == 2
-    assert result.adjusted == 17
+    result = part1("../../inputFiles/day1/SimpleTestInput.txt")
+    assert result == 17
   end
 
   test "
@@ -94,8 +93,7 @@ defmodule Day1Test do
     when finding first repeating
     return the first repeating is 0
   " do
-    result = adjustFrequencyFromFile("../../inputFiles/simpleTestInputPartOne.txt")
-    assert result.tries == 2
-    assert result.first_repeating == 17
+    result = part2("../../inputFiles/day1/SimpleTestInput.txt")
+    assert result == 17
   end
 end

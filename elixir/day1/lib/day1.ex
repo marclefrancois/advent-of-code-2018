@@ -1,8 +1,45 @@
+defmodule Day1.Frequencies do
+  defstruct current: 0, adjusted: 0, seen: [], first_repeating: nil, tries: 0
+end
+
 defmodule Day1 do
-  def adjustFrequencyFromFile(filename) do
+  def run() do
+    IO.puts("Advent of code day 1 !")
+
+    IO.puts("Answer for part 1")
+
+    part1("../../inputFiles/day1/Input.txt")
+    |> IO.puts()
+
+    IO.puts("Answer for part 2")
+
+    part2("../../inputFiles/day1/Input.txt")
+    |> IO.puts()
+  end
+
+  def part1(filename) do
     case File.read(filename) do
       {:ok, file} ->
-        processFile(file)
+        result = processFile(file)
+        |> adjustFrequency
+
+        result.adjusted
+
+      {:error, :enoent} ->
+        "This file does not exists"
+
+      {:error, reason} ->
+        "An unknown error happened while loading the file #{filename}, #{reason}"
+    end
+  end
+
+  def part2(filename) do
+    case File.read(filename) do
+      {:ok, file} ->
+        result = processFile(file)
+        |> findRepeatingFrequency
+
+        result.firstRepeating
 
       {:error, :enoent} ->
         "This file does not exists"
@@ -51,7 +88,6 @@ defmodule Day1 do
     String.split(file, "\n")
     |> Enum.filter(fn input -> filterBadInput(input) end)
     |> Enum.map(fn input -> String.to_integer(input) end)
-    |> findRepeatingFrequency
   end
 
   defp filterBadInput(string) do
