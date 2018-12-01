@@ -4,26 +4,34 @@ end
 
 defmodule Day1 do
   def run() do
-    IO.puts("Advent of code day 1 !")
+    start = System.monotonic_time(unquote(:milli_seconds))
 
+    IO.puts("-----------------------")
+    IO.puts("Advent of code day 1 !")
+    IO.puts("-----------------------")
     IO.puts("Answer for part 1")
 
     part1("../../inputFiles/day1/Input.txt")
     |> IO.puts()
 
+    time_spent = System.monotonic_time(unquote(:milli_seconds)) - start
+    IO.puts("took #{time_spent} milliseconds")
+    IO.puts("-----------------------")
     IO.puts("Answer for part 2")
 
     part2("../../inputFiles/day1/Input.txt")
     |> IO.puts()
+
+    time_spent = System.monotonic_time(unquote(:milli_seconds)) - start
+    IO.puts("took #{time_spent} milliseconds")
+    IO.puts("-----------------------")
   end
 
   def part1(filename) do
     case File.read(filename) do
       {:ok, file} ->
-        result = processFile(file)
-        |> adjustFrequency
-
-        result.adjusted
+        processFile(file)
+        |> Enum.sum()
 
       {:error, :enoent} ->
         "This file does not exists"
@@ -36,10 +44,11 @@ defmodule Day1 do
   def part2(filename) do
     case File.read(filename) do
       {:ok, file} ->
-        result = processFile(file)
-        |> findRepeatingFrequency
+        result =
+          processFile(file)
+          |> findRepeatingFrequency
 
-        result.firstRepeating
+        result.first_repeating
 
       {:error, :enoent} ->
         "This file does not exists"
@@ -86,8 +95,8 @@ defmodule Day1 do
 
   defp processFile(file) do
     String.split(file, "\n")
-    |> Enum.filter(fn input -> filterBadInput(input) end)
-    |> Enum.map(fn input -> String.to_integer(input) end)
+    |> Enum.filter(&filterBadInput/1)
+    |> Enum.map(&String.to_integer/1)
   end
 
   defp filterBadInput(string) do
