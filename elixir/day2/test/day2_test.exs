@@ -79,7 +79,7 @@ defmodule Day2Part1Test do
     when solving
     answer is 7105
   " do
-    
+
   end
 end
 
@@ -88,6 +88,15 @@ defmodule Day2Part2Test do
   import Day2.Part2
 
   test "part2" do
-    # solve()
+    input = ~w(abcde fghij klmno pqrst fguij axcye wvxyz)
+    assert solve(input) == "fgij"
+  end
+
+  test"
+    Given day 2 input
+    when solving
+    answer is 7105
+  " do
+
   end
 end
