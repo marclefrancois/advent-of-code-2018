@@ -21,7 +21,7 @@ defmodule Day2 do
     IO.puts("Part Two took #{time_part_two} milliseconds")
   end
 
-  def prepare_input do
+  defp prepare_input do
     "../../inputFiles/day2/input.txt"
     |> File.stream!()
     |> Stream.map(&String.trim_trailing/1)
@@ -38,35 +38,23 @@ defmodule Day2.Part1 do
     twos * threes
   end
 
-  defp find_repeating_chars(string, acc) do
+  defp find_repeating_chars(string, %{twos: twos, threes: threes}) do
     counts =
       string
       |> String.graphemes()
       |> Enum.reduce(%{}, &find_threes_and_twos/2)
+      |> Map.values()
 
-    two =
-      if Enum.find_value(Map.values(counts), fn x ->
-           x == 2
-         end),
-         do: 1,
-         else: 0
-
-    three =
-      if Enum.find_value(Map.values(counts), fn x ->
-           x == 3
-         end),
-         do: 1,
-         else: 0
-
-    %{twos: twos, threes: threes} = acc
-    %{acc | twos: twos + two, threes: threes + three}
+    case [2 in counts, 3 in counts] do
+      [true, true] -> %{twos: twos + 1, threes: threes + 1}
+      [true, false] -> %{twos: twos + 1, threes: threes}
+      [false, true] -> %{twos: twos, threes: threes + 1}
+      _ -> %{twos: twos, threes: threes}
+    end
   end
 
   defp find_threes_and_twos(char, acc) do
-    case acc do
-      %{^char => current_count} -> %{acc | char => current_count + 1}
-      _ -> Map.put(acc, char, 1)
-    end
+    Map.put(acc, char, (acc[char] || 0) + 1)
   end
 end
 
@@ -101,12 +89,6 @@ defmodule Day2.Part2 do
         acc
       end
     end)
-  end
-
-  defp compare_at_index(char, parent, other_list) do
-    index = Enum.find_index(parent, fn x -> x == char end)
-    other_char = Enum.at(other_list, index)
-    if char == other_char, do: 0, else: 1
   end
 
   defp keep_closest(candidate, acc) do
